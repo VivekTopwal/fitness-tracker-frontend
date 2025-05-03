@@ -1,0 +1,139 @@
+/* MealTracker specific styles */
+.meal-tracker-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .meal-tracker-container h2,
+  .meal-tracker-container h3 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .meal-tracker-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .meal-tracker-form input,
+  .meal-tracker-form select,
+  .meal-tracker-form button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .meal-tracker-form button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .meal-tracker-form button:hover {
+    background-color: #45a049;
+  }
+  
+  .meal-tracker-list {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .meal-tracker-list li {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .meal-tracker-list li strong {
+    font-weight: bold;
+  }
+  
+  .meal-tracker-list li button {
+    background-color: #f44336;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .meal-tracker-list li button:hover {
+    background-color: #e53935;
+  }
+  
+
+  .trash-view {
+    background-color: #fff5f5;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+  }
+  
+  .trash-meal-card {
+    background-color: #ffeaea;
+    border-left: 6px solid #ff4d4d;
+    margin: 10px 0;
+    padding: 15px 20px;
+    border-radius: 10px;
+    position: relative;
+  }
+  
+  .trash-meal-card h4 {
+    margin: 0 0 8px;
+    color: #b30000;
+  }
+  
+  .trash-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .restore-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .restore-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .delete-permanent-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .delete-permanent-btn:hover {
+    background-color: #d32f2f;
+  }
+  
+  .clear-trash-btn {
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+  
+  .clear-trash-btn:hover {
+    background-color: #c62828;
+  }
+  

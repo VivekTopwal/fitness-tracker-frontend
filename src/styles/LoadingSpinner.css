@@ -1,0 +1,55 @@
+/* Overlay to cover the screen */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+  
+  /* Multi-Square Loader Container */
+  .flipping-squares {
+    display: flex;
+    gap: 10px;
+  }
+  
+  /* Individual Squares */
+  .square {
+    width: 20px;
+    height: 20px;
+    background-color: #4CAF50; /* Green */
+    animation: flip 1.5s infinite ease-in-out;
+  }
+  
+  /* Delays for Staggered Animation Effect */
+  .square:nth-child(1) {
+    animation-delay: 0s;
+  }
+  .square:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .square:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  .square:nth-child(4) {
+    animation-delay: 0.6s;
+  }
+  
+  /* Keyframes for Flipping Animation */
+  @keyframes flip {
+    0% {
+      transform: perspective(100px) rotateX(0deg) rotateY(0deg);
+    }
+    50% {
+      transform: perspective(100px) rotateX(180deg) rotateY(0deg);
+    }
+    100% {
+      transform: perspective(100px) rotateX(180deg) rotateY(180deg);
+    }
+  }
+  
