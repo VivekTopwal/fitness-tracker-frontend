@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
+const BASE_URL = process.env.REACT_APP_API_URL;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", { email, password });
+      const res = await axios.post(`${BASE_URL}/api/auth/login`, { email, password });
 
       localStorage.setItem("token", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
@@ -43,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(async () => {
     try {
       if (refreshToken) {
-        await axios.post("http://localhost:5000/api/auth/logout", { token: refreshToken });
+        await axios.post(`${BASE_URL}/api/auth/logout`, { token: refreshToken });
       }
     } catch (error) {
       console.error("❌ Logout failed:", error.response?.data?.message || "Unknown error");
@@ -64,13 +65,13 @@ export const AuthProvider = ({ children }) => {
       logout();
       return null;
     }
-  
+
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/refresh", { token: refreshToken });
-  
+      const res = await axios.post(`${BASE_URL}/api/auth/refresh`, { token: refreshToken });
+
       console.log("✅ Access token refreshed:", res.data.accessToken);
       localStorage.setItem("token", res.data.accessToken);
-      setToken(res.data.accessToken);  // ✅ Update token in context
+      setToken(res.data.accessToken);
       return res.data.accessToken;
     } catch (error) {
       console.error("❌ Refresh token failed. Logging out.", error);
@@ -78,11 +79,10 @@ export const AuthProvider = ({ children }) => {
       return null;
     }
   }, [refreshToken, logout]);
-  
 
   useEffect(() => {
     const axiosInstance = axios.create();
-  
+
     axiosInstance.interceptors.request.use(
       async (config) => {
         if (!token) {
@@ -96,12 +96,12 @@ export const AuthProvider = ({ children }) => {
       },
       (error) => Promise.reject(error)
     );
-  
+
     axiosInstance.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
-  
+
         if (error.response?.status === 403 && !originalRequest._retry) {
           originalRequest._retry = true;
           const newAccessToken = await refreshAccessToken();
@@ -114,10 +114,21 @@ export const AuthProvider = ({ children }) => {
       }
     );
   }, [token, refreshAccessToken]);
-  
 
   return (
-    <AuthContext.Provider value={{ user, setUser, token, setToken, refreshToken, role, login, logout, refreshAccessToken }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        token,
+        setToken,
+        refreshToken,
+        role,
+        login,
+        logout,
+        refreshAccessToken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
