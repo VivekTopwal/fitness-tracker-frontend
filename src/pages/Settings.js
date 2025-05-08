@@ -7,7 +7,7 @@ import "../styles/Settings.css";
 const Settings = () => {
   const { user, token, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const BASE_URL = process.env.REACT_APP_API_URL;
   // ✅ Initialize with false to avoid uncontrolled input warning
   const [settings, setSettings] = useState({ notifications: false });
 
@@ -23,7 +23,7 @@ const Settings = () => {
 
     const fetchSettings = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/user/settings", {
+        const res = await axios.get(`${BASE_URL}/api/user/settings`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -54,7 +54,7 @@ const Settings = () => {
     setError(null);
 
     try {
-      await axios.put("http://localhost:5000/api/user/settings", settings, {
+      await axios.put(`${BASE_URL}/api/user/settings`, settings, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

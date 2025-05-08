@@ -3,6 +3,9 @@ import axios from "axios";
 import AuthContext from "../context/AuthContext";
 import "../styles/WorkoutTracker.css";
 
+const BASE_URL = process.env.REACT_APP_API_URL;
+
+
 const WorkoutTracker = () => {
   const { token } = useContext(AuthContext);
   const [workouts, setWorkouts] = useState([]);
@@ -16,7 +19,7 @@ const WorkoutTracker = () => {
 
   const fetchWorkouts = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/workouts", {
+      const res = await axios.get(`${BASE_URL}/api/workouts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setWorkouts(res.data);
@@ -37,7 +40,7 @@ const WorkoutTracker = () => {
     e.preventDefault();
     console.log("Submitting workout:", newWorkout);
     try {
-      const res = await axios.post("http://localhost:5000/api/workouts", {
+      const res = await axios.post(`${BASE_URL}/api/workouts`, {
         exercise: newWorkout.exercise,
         sets: Number(newWorkout.sets),
         reps: Number(newWorkout.reps),
@@ -56,7 +59,7 @@ const WorkoutTracker = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/workouts/${id}`, {
+      await axios.delete(`${BASE_URL}/api/workouts/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setWorkouts(workouts.filter((w) => w._id !== id));
@@ -77,7 +80,7 @@ const WorkoutTracker = () => {
 
   const saveEdit = async (id) => {
     try {
-      const res = await axios.put(`http://localhost:5000/api/workouts/${id}`, editedWorkout, {
+      const res = await axios.put(`${BASE_URL}/api/workouts/${id}`, editedWorkout, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setWorkouts(workouts.map((w) => (w._id === id ? res.data : w)));

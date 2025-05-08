@@ -13,6 +13,8 @@ const AiMealPlanner = () => {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const BASE_URL = process.env.REACT_APP_API_URL;
+
   const handleGenerateMealPlan = async () => {
     if (!goal) return;
     setLoading(true);
@@ -21,7 +23,7 @@ const AiMealPlanner = () => {
     const requestBody = { goal, cuisine, mealsPerDay };
 
     try {
-      const res = await axios.post("http://localhost:5000/api/ai-meal/generate", requestBody);
+      const res = await axios.post(`${BASE_URL}/api/ai-meal/generate`, requestBody);
       setResponse(res.data.plan);
     } catch (err) {
       console.error("Frontend error:", err);
@@ -32,7 +34,7 @@ const AiMealPlanner = () => {
   };
   const handleSaveMealPlan = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/api/ai-meal/save", {
+      const res = await axios.post(`${BASE_URL}/api/ai-meal/save`, {
         plan: response,
       }, {
         headers: {

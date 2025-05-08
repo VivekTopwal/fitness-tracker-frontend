@@ -18,9 +18,11 @@ const MealTracker = () => {
   });
   const [editingMeal, setEditingMeal] = useState(null);
 
+  const BASE_URL = process.env.REACT_APP_API_URL;
+
   const fetchMeals = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/meals", {
+      const res = await axios.get(`${BASE_URL}/api/meals`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMeals(res.data);
@@ -39,7 +41,7 @@ const MealTracker = () => {
     if (editingMeal) {
       try {
         await axios.put(
-          `http://localhost:5000/api/meals/${editingMeal._id}`,
+          `${BASE_URL}/api/meals/${editingMeal._id}`,
           { ...form },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -52,7 +54,7 @@ const MealTracker = () => {
       }
     } else {
       try {
-        await axios.post("http://localhost:5000/api/meals", form, {
+        await axios.post(`${BASE_URL}/api/meals`, form, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchMeals();
@@ -88,7 +90,7 @@ const MealTracker = () => {
     if (!confirm) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/meals/${mealId}`, {
+      await axios.delete(`${BASE_URL}/api/meals/${mealId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchMeals();
@@ -99,7 +101,7 @@ const MealTracker = () => {
 
   const handleRestore = async (mealId) => {
     try {
-      await axios.put(`http://localhost:5000/api/meals/restore/${mealId}`, {}, {
+      await axios.put(`${BASE_URL}/api/meals/restore/${mealId}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchMeals();
@@ -113,7 +115,7 @@ const MealTracker = () => {
     if (!confirm) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/meals/permanent/${mealId}`, {
+      await axios.delete(`${BASE_URL}/api/meals/permanent/${mealId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchMeals();
@@ -127,7 +129,7 @@ const MealTracker = () => {
     if (!confirm) return;
 
     try {
-      await axios.delete("http://localhost:5000/api/meals/clear-trash", {
+      await axios.delete(`${BASE_URL}/api/meals/clear-trash`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchMeals();

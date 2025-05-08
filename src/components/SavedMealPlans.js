@@ -2,20 +2,23 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { marked } from "marked";
 
+const BASE_URL = process.env.REACT_APP_API_URL;
+
+
 const SavedMealPlans = ({ token }) => {
   const [savedPlans, setSavedPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visiblePlans, setVisiblePlans] = useState({}); // for toggling visibility
 
   const fetchSavedMealPlans = useCallback(async () => {
-    const res = await axios.get("http://localhost:5000/api/ai-meal/saved", {
+    const res = await axios.get(`${BASE_URL}/api/ai-meal/saved`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return res.data.savedMealPlans;
   }, [token]);
 
   const deleteSavedMealPlan = async (id) => {
-    await axios.delete(`http://localhost:5000/api/ai-meal/delete/${id}`, {
+    await axios.delete(`${BASE_URL}/api/ai-meal/delete/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   };
