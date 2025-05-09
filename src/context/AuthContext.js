@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post(`${BASE_URL}/api/auth/login`, { email, password });
+      const res = await axios.post(`${BASE_URL}/api/auth/login`, { email, password }, { withCredentials: true });
 
       localStorage.setItem("token", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(async () => {
     try {
       if (refreshToken) {
-        await axios.post(`${BASE_URL}/api/auth/logout`, { token: refreshToken });
+        await axios.post(`${BASE_URL}/api/auth/logout`, { token: refreshToken },  { withCredentials: true } );
       }
     } catch (error) {
       console.error("❌ Logout failed:", error.response?.data?.message || "Unknown error");
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const res = await axios.post(`${BASE_URL}/api/auth/refresh`, { token: refreshToken });
+      const res = await axios.post(`${BASE_URL}/api/auth/refresh`, { token: refreshToken }, { withCredentials: true } );
 
       console.log("✅ Access token refreshed:", res.data.accessToken);
       localStorage.setItem("token", res.data.accessToken);
