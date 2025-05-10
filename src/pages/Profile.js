@@ -15,6 +15,9 @@ const Profile = () => {
   });
   const [loading, setLoading] = useState(false);
 
+
+  const BASE_URL = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     if (user) {
       setFormData({
@@ -49,7 +52,7 @@ const Profile = () => {
       if (!password) delete updateData.password; // ✅ Ensure password isn't sent if empty
 
       const res = await axios.put(
-        "http://localhost:5000/api/user/update",
+        `${BASE_URL}/api/user/update`,
         updateData,
         { headers: { Authorization: `Bearer ${currentToken}` } }
       );
@@ -87,7 +90,7 @@ const Profile = () => {
     formData.append("profilePic", file);
 
     try {
-      const res = await axios.put("http://localhost:5000/api/user/upload-profile-pic", formData, {
+      const res = await axios.put(`${BASE_URL}/api/user/upload-profile-pic`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -110,7 +113,7 @@ const Profile = () => {
 
       <div className="profile-pic-container">
         <img
-          src={formData.profilePic.startsWith("/uploads") ? `http://localhost:5000${formData.profilePic}` : formData.profilePic}
+          src={formData.profilePic.startsWith("/uploads") ? `${BASE_URL}${formData.profilePic}` : formData.profilePic}
           alt="Profile"
           className="profile-pic"
           onError={(e) => (e.target.src = "/default-profile.png")}
