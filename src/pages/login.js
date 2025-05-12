@@ -1,28 +1,27 @@
 import { useState, useContext } from "react";
-import { Link,  useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import AuthContext from "../context/AuthContext";
-import "../styles/Login.css"; // Add styling
-
-
+import "../styles/Login.css";
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login, googleLogin } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    login(email, password);
-  };
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  await login(email, password);
+  navigate("/dashboard"); // or wherever your main screen is
+};
 
-  const handleGoogleLogin = () => {
-    // 🔒 Connect to Firebase/OAuth here later
-    alert("Google login coming soon!");
-  };
+const handleGoogleLogin = async () => {
+  await googleLogin();
+  navigate("/dashboard");
+};
 
-  
-const navigate = useNavigate();
+
   return (
     <div className="login-container">
       <h2 className="login-title">Welcome Back</h2>
@@ -46,25 +45,17 @@ const navigate = useNavigate();
         </button>
       </form>
 
-
-     
-    
       <p className="switch-auth">
         Don't have an account? <Link to="/register">Register</Link>
       </p>
-  
-
-      {/* <p>
-  Don't have an account?{" "}
-  <span onClick={() => navigate("/register")} style={{ color: "blue", cursor: "pointer" }}>
-    Create one
-  </span>
-</p> */}
 
       <div className="separator">or</div>
 
       <button className="google-btn" onClick={handleGoogleLogin}>
-        <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="G" />
+        <img
+          src="https://img.icons8.com/color/16/000000/google-logo.png"
+          alt="G"
+        />
         Login with Google
       </button>
     </div>

@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import { auth, provider, signInWithPopup } from "../firebase";
 
 const AuthContext = createContext();
 const BASE_URL = process.env.REACT_APP_API_URL;
@@ -26,7 +27,11 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post(`${BASE_URL}/api/auth/login`, { email, password }, { withCredentials: true });
+      const res = await axios.post(
+        `${BASE_URL}/api/auth/login`,
+        { email, password },
+        { withCredentials: true }
+      );
 
       localStorage.setItem("token", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
@@ -41,10 +46,35 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const googleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const googleUser = result.user;
+
+      const res = await axios.post(`${BASE_URL}/api/auth/google-login`, {
+        email: googleUser.email,
+        name: googleUser.displayName,
+        avatar: googleUser.photoURL,
+        uid: googleUser.uid,
+      });
+
+      localStorage.setItem("token", res.data.accessToken);
+      localStorage.setItem("refreshToken", res.data.refreshToken);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      setUser(res.data.user);
+      setToken(res.data.accessToken);
+      setRefreshToken(res.data.refreshToken);
+      setRole(res.data.user.role);
+    } catch (error) {
+      console.error("❌ Google login failed:", error.message);
+    }
+  };
+
   const logout = useCallback(async () => {
     try {
       if (refreshToken) {
-        await axios.post(`${BASE_URL}/api/auth/logout`, { token: refreshToken },  { withCredentials: true } );
+        await axios.post(`${BASE_URL}/api/auth/logout`, { token: refreshToken }, { withCredentials: true });
       }
     } catch (error) {
       console.error("❌ Logout failed:", error.response?.data?.message || "Unknown error");
@@ -67,7 +97,11 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const res = await axios.post(`${BASE_URL}/api/auth/refresh`, { token: refreshToken }, { withCredentials: true } );
+      const res = await axios.post(
+        `${BASE_URL}/api/auth/refresh`,
+        { token: refreshToken },
+        { withCredentials: true }
+      );
 
       console.log("✅ Access token refreshed:", res.data.accessToken);
       localStorage.setItem("token", res.data.accessToken);
@@ -125,6 +159,7 @@ export const AuthProvider = ({ children }) => {
         refreshToken,
         role,
         login,
+        googleLogin,
         logout,
         refreshAccessToken,
       }}
