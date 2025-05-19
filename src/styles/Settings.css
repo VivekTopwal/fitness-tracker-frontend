@@ -27,3 +27,17 @@
     background: #dc3545;
   }
   
+
+  .checkbox-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  white-space: nowrap; /* Prevent label from wrapping */
+}

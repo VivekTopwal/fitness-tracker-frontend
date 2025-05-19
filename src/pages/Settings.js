@@ -81,16 +81,17 @@ const Settings = () => {
       {error && <p className="error-message">{error}</p>}
 
       <form onSubmit={handleSubmit}>
-        <label>
-        <input
-  type="checkbox"
-  name="notifications"
-  checked={!!settings.notifications} // ✅ force to boolean
-  onChange={handleChange}
-/>
-
-          Enable Notifications
-        </label>
+      <div className="checkbox-wrapper">
+  <label className="checkbox-label">
+    <input
+      type="checkbox"
+      name="notifications"
+      checked={!!settings.notifications}
+      onChange={handleChange}
+    />
+    Enable Notifications
+  </label>
+</div>
 
         <button type="submit" disabled={loading}>
           {loading ? "Saving..." : "Save Settings"}
